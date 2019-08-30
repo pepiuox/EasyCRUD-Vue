@@ -58,6 +58,7 @@ if (!empty($_GET["tbl"])) {
     $cli = implode(" , ", $varc);
     $upost = implode(" ", $uposts);
     $cpost = implode(" ", $cposts);
+    // create app.js
     $appfile = 'app.js';
     $myapp = fopen("$appfile", "w") or die("Unable to open file!");
     $appcontent = 'var app = new Vue({
@@ -156,7 +157,8 @@ if (!empty($_GET["tbl"])) {
             });';
     fwrite($myapp, $appcontent);
     fclose($myapp);
-
+// end create app.js    
+// create app.php
     $apifile = 'app.php';
     $myapi = fopen("$apifile", "w") or die("Unable to open file!");
     $apicontent = '
@@ -241,17 +243,19 @@ die();
     fwrite($myapi, $apicontent);
     fclose($myapi);
 }
+// end create app.php    
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Easy CRUD Vue Axios PHP Mysql</title>
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="css/line-awesome.min.css">
         <!-- <link rel="stylesheet" type="text/css" href="css/mystyle.css"> -->
         <script src="js/vue.js"></script>
         <script src="js/jquery.min.js"></script>
-       <!--   <script src="js/popover.js"></script> -->
+        <!-- <script src="js/popover.js"></script> -->
         <script src="js/bootstrap.min.js">
         </script><script src="js/axios.min.js"></script>
         <style type="text/css">
@@ -261,8 +265,6 @@ die();
                 color:black;
                 margin: auto;
                 min-height: 350px;
-
-
             }
             .modal-content{
                 background-color: rgba(0,0,0,0.4);
@@ -333,7 +335,6 @@ die();
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
@@ -413,17 +414,17 @@ die();
             <div class="container" id="app"> 
                 <div class="row py-3">
                     <div class="w-100">
-                    <div class="alert alert-success" role="alert" v-if="successmessage">
-                        <h4 class="alert-heading" >{{successmessage}}</h4> 
-                    </div>
-                    <div class="alert alert-danger" role="alert" v-if="errormessage">
-                        <h4 class="alert-heading" >{{errormessage}}</h4> 
-                    </div>
+                        <div class="alert alert-success" role="alert" v-if="successmessage">
+                            <h4 class="alert-heading" >{{successmessage}}</h4> 
+                        </div>
+                        <div class="alert alert-danger" role="alert" v-if="errormessage">
+                            <h4 class="alert-heading" >{{errormessage}}</h4> 
+                        </div>
                     </div>
                     <br> 
                     <div class="col-md-12 my-btn pb-2" >
                         <span><b>List of <?php echo $tble; ?></b></span>
-                        <button type="button" class="btn btn-primary " @click="showmodaladd=true">Add New</button>
+                        <button type="button" class="btn btn-primary " @click="showmodaladd=true">Add <i class="fa fa-plus" aria-hidden="true"></i></button>
                     </div> <hr>
                     <br>
                     <table class="table table-sm">
@@ -435,22 +436,22 @@ die();
                                     echo '<th scope="col">' . ucfirst(str_replace(' id', '', $remp)) . '</th>' . "\n";
                                 }
                                 ?>
-
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="dato in datos">
-
                                 <?php
                                 foreach ($cnames as $cname) {
                                     echo '<td scope="row">{{dato.' . $cname . '}}</td>' . "\n";
                                 }
                                 ?>
-
-                                <td><button type="button" class="btn btn-info"  @click="showmodaledit = true; selectDato(dato)">Edit</button> &nbsp; <button type="button" class="btn btn-danger" @click="showmodaldelete= true; selectDato(dato)">Del</button></td>
+                                <td>
+                                    <button type="button" class="btn btn-info"  @click="showmodaledit = true; selectDato(dato)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                    &nbsp; 
+                                    <button type="button" class="btn btn-danger" @click="showmodaldelete= true; selectDato(dato)"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                </td>
                             </tr>
-
                         </tbody>
                     </table> 
                     <!-- add modal -->
@@ -458,12 +459,12 @@ die();
 
                         <div class="modal-content" v-if="showmodaladd" id="addmodal">
                             <div class="ra-modal" >
-
                                 <p class="head bg-info"><i class="la la-times "  @click="showmodaladd= false"></i></p>
                                 <form method="post" class="my-form" action="javascript:void(0)">
-                                    <h5>Add dato</h5>
+                                    <h5>Add <i class="fa fa-plus" aria-hidden="true"></i></h5>
                                     <?php
                                     foreach ($cnames as $key => $cname) {
+                                        //dont generate id col
                                         if ($key == 0) {
                                             continue;
                                         } else {
@@ -477,7 +478,6 @@ die();
                                         }
                                     }
                                     ?>
-
                                     <div class="col-sm-9">
                                         <button type="button" class="btn btn-info"  @click="showmodaladd = false; saveDato()">Add dato</button>
                                     </div>
@@ -493,9 +493,10 @@ die();
 
                             <p class="head bg-info"><i class="la la-times "  @click="showmodaledit= false"></i></p>
                             <form method="post" class="my-form">
-                                <h5>Edit dato</h5>
+                                <h5>Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h5>
                                 <?php
                                 foreach ($cnames as $key => $cname) {
+                                    //dont generate id col
                                     if ($key == 0) {
                                         continue;
                                     } else {
@@ -509,11 +510,11 @@ die();
                                     }
                                 }
                                 ?>
-
                                 <div class="form-group row">
-
                                     <div class="col-sm-9">
-                                        <button type="button" class="btn btn-info"  @click="showmodaledit = false;updateDato(dato) ">Update</button>
+                                        <button type="button" class="btn btn-info"  @click="showmodaledit = false;updateDato(dato) ">
+                                            <i class="fas fa-pencil-alt"></i>
+                                            Update</button>
                                     </div>
                                 </div>
                             </form>
@@ -521,16 +522,15 @@ die();
                     </div>
                     <!-- end of edit modal -->
 
-
                     <!-- Delete modal -->
                     <transition name="bounce">
                         <div class="modal-content" v-if="showmodaldelete" id="deletemodal">
-                            <div class="ra-modal" >
-
+                            <div class="ra-modal" >                                
                                 <p class="head bg-info"><i class="la la-times "  @click="showmodaldelete= false"></i></p>
                                 <p class="text-center">You  are going to delete id {{clickedDato.<?php echo $idcol; ?>}}</p>
-                                <br><br><br><br>
+                                <br>
                                 <div class="buttons container">
+                                    <p></p>
                                     <button type="button" class="btn btn-success" @click="showmodaldelete = false; deleteDato(dato)">Yes</button> &nbsp;&nbsp;&nbsp;
                                     <button type="button" class="btn btn-info" @click="showmodaldelete = false">No</button>
                                 </div>
