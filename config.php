@@ -1,9 +1,9 @@
 <?php
 
-define('DBHOST', 'localhost'); // Add your host
-define('DBUSER', 'root'); // Add your username
-define('DBPASS', 'truelove'); // Add your password
-define('DBNAME', 'granja'); // Add your database name
+define('DBHOST', ''); // Add your host
+define('DBUSER', ''); // Add your username
+define('DBPASS', ''); // Add your password
+define('DBNAME', ''); // Add your database name
 //MySQLi Object / Procedural
 // for MySqli use $con 
 $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
