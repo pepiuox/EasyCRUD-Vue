@@ -10,4 +10,5 @@ $conn = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
 if (!$conn) {
     die('Error: Could not connect: ' . mysqli_error());
 }
+mysqli_set_charset($conn,"utf8");
 ?>
